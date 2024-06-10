@@ -3,45 +3,72 @@ const hostname = '127.0.0.1';
 const port = 3001;
 
 var ClickCount = 0;
+var text = "HELLO WORLD";
+
 const server = createServer((req, res) => {
-        // Website you wish to allow to connect
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
-        // Request methods you wish to allow
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    
-        // Request headers you wish to allow
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    
-        // Set to true if you need the website to include cookies in the requests sent
-        // to the API (e.g. in case you use sessions)
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        console.log(req.url);
-        if(req.url == "/ADDClick"){
+
+  if (req.url == "/API/CLICK/CHECK") {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    ClickCount++;
+    res.end('Liczba Kliknięć: ' + ClickCount);
+    return;
+  } else
+    if (req.url == "/API/CLICK/CLICK") {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/plain');
+      res.end('Liczba Kliknięć: ' + ClickCount);
+      return;
+    }
+    else
+      if (req.url == "/API/TEXT/SHOW") {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/plain');
-        ClickCount++;
         res.end('Liczba Kliknięć: ' + ClickCount);
         return;
-    } else
-    if(req.url == "/CheckClick"){
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/plain');
-        res.end('Liczba Kliknięć: ' + ClickCount);
-        return;
-    }
+      }
+      else
+        if (req.url == "/API/TEXT/EDIT") {
+         
 
-    
-    else{
-  res.statusCode = 404;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Wrong PATH');
-    }
+          let body = '';
+          req.on('data', chunk => {
+              body += chunk.toString();
+          });
+          req.on('end', () => {
+            res.statusCode = 200;
+
+            console.log(body);
+              console.log(typeof(body));
+              for (var i = 0; i < body.length; i++) {
+                console.log(body.charAt(i))
+              }
+              var KURWA = body;
+              console.log(JSON.parse(KURWA));
+          });
+           //var j = JSON.parse(body);
+               //res.end(j);
+          //var json = JSON.parse("{\"Text\":\"text\"}");
+          //console.log(body)
+
+         
+          return;
+        }
 
 
-  
+        else {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'text/plain');
+          res.end('Wrong PATH');
+        }
+
+
+
 });
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

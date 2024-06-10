@@ -9,6 +9,7 @@ import {
 
 import ClickExample from './Componnts/ClickExample';
 import NextExample from './Componnts/NextExample';
+import TextEdition from './Componnts/TextEdition';
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
     <div className="App">
       <Router>
             <Routes>
-                <Route  path="/" element={<ClickExample />} />
+                <Route  path="/" element={<TextEdition />} />
                 <Route  path="/NextExample" element={<NextExample />} />
             </Routes>
         </Router>
